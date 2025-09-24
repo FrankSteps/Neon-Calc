@@ -7,11 +7,11 @@ int main() {
     std::cout << "first value: ";
     std::cin >> val1;
 
-    std::cout << "second value: ";
-    std::cin >> val2;
-
     std::cout << "operation: ";
     std::cin >> simbol;
+
+    std::cout << "second value: ";
+    std::cin >> val2;
 
     switch (simbol) {
         case '+':
@@ -28,7 +28,7 @@ int main() {
 
         case '/':
             if (!val2 == 0) {
-                std::cout << '\n' << val1 + val2 << '\n';
+                std::cout << '\n' << val1 / val2 << '\n';
             } else {
                 std::cout << '\n' << "error" << '\n';
                 return EXIT_FAILURE;
@@ -39,4 +39,6 @@ int main() {
             std::cout << '\n' << "error" << '\n';   
         break;
     }
+
+    return EXIT_SUCCESS;
 }

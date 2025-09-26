@@ -1,3 +1,9 @@
+/*
+    Developer: Francisco Passos | Frank Steps
+    Developed in: 25/09/2025
+    Modifield in:   26/09/2025
+*/
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -9,8 +15,13 @@ namespace ray {
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
 
+    // icon
     ray::Image icon = ray::LoadImage("images/neon.png");
     ray::SetWindowIcon(icon);
+
+    // fonts
+    ray::Font ms_sans = ray::LoadFont("fonts/ms-sans-serif.otf");
+    ray::Font tahoma = ray::LoadFont("fonts/tahomabd.ttf");
 
     // define colors
     ray::Color background = {224, 224, 224, 255};  
@@ -65,7 +76,7 @@ int main() {
         actual_row += 66.0f;
     }
 
-
+    // jury-rig button :/
     ray::Rectangle Jury_rig = {84, 348, 142, 60};
     ray::Rectangle Jury_rig_sh = {84, 404, 142, 4};
     ray::Rectangle Jury_rig_br = {84, 348, 142, 4};
@@ -79,18 +90,10 @@ int main() {
         ray::BeginDrawing();
         ray::ClearBackground(background);
 
+        // menu bar interface
         ray::DrawRectangleRec(menuBar, background_Alt);
 
-        ray::DrawRectangleRec(visor, ray::WHITE);
-        ray::DrawRectangleLinesEx(visor, 1, border_c);
-
-        for(int i = 0; i < num_buttons; i++){
-            ray::DrawRectangleRec(button[i], background_Alt);
-            ray::DrawRectangleRec(shadow[i], shadow_c);
-            ray::DrawRectangleRec(bright[i], ray::WHITE);
-            ray::DrawRectangleLinesEx(button[i], 1, border_c);
-        }
-
+        // render buttons
         for(int i = 0; i < 3; i++){
             ray::DrawRectangleRec(bnt_up[i], background_Alt);
             ray::DrawRectangleRec(bnt_sh[i], shadow_c);
@@ -98,19 +101,64 @@ int main() {
             ray::DrawRectangleLinesEx(bnt_up[i], 1, border_c);
         }
 
+        // visor
+        ray::DrawRectangleRec(visor, ray::WHITE);
+        ray::DrawRectangleLinesEx(visor, 1, border_c);
+
+
+        // render arithmetic buttons 
+        for(int i = 0; i < num_buttons; i++){
+            ray::DrawRectangleRec(button[i], background_Alt);
+            ray::DrawRectangleRec(shadow[i], shadow_c);
+            ray::DrawRectangleRec(bright[i], ray::WHITE);
+            ray::DrawRectangleLinesEx(button[i], 1, border_c);
+        }
+
         ray::DrawRectangleRec(Jury_rig, background_Alt);
         ray::DrawRectangleRec(Jury_rig_sh, shadow_c);
         ray::DrawRectangleRec(Jury_rig_br, ray::WHITE);
         ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
 
+        // output error
         ray::DrawRectangleLinesEx(output, 1, border_c);
         ray::DrawRectangleRec(output_sh, shadow_c);
 
+        // text
+        ray::DrawTextEx(ms_sans, "Menu", {10, 7}, 17, 1, ray::BLACK);
+        ray::DrawTextEx(ms_sans, "Settings", {70, 7}, 17, 1, ray::BLACK);
+        ray::DrawTextEx(ms_sans, "About", {150, 7}, 17, 1, ray::BLACK);
+
+        ray::DrawTextEx(ms_sans, "---->", {31, 45}, 17, 1, ray::BLACK);
+        ray::DrawTextEx(ms_sans, "Copy", {173, 45}, 17, 1, ray::BLACK);
+        ray::DrawTextEx(ms_sans, "Clear", {246, 45}, 17, 1, ray::BLACK);
+
+
+        // falta automatizar essa parte -> coordenadas prontas
+
+        ray::DrawTextEx(tahoma, "/", {258, 162}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "*", {258, 234}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "-", {260, 296}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "+", {256, 360}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "=", {146, 360}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "0", {36, 360}, 32, 1, ray::BLACK);
+
+        ray::DrawTextEx(tahoma, "9", {183, 162}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "8", {110, 162}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "7", {34, 162}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "6", {183, 230}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "5", {110, 230}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "4", {36, 230}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "3", {183, 295}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "2", {110, 295}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "1", {36, 295}, 32, 1, ray::BLACK);
+
+        // colisions
         ray::EndDrawing();
     }
 
     // unloads
     ray::UnloadImage(icon);
+    ray::UnloadFont(ms_sans);
     ray::CloseWindow();
     return EXIT_SUCCESS;
 }

@@ -18,31 +18,31 @@ int main() {
     ray::Color border_c = {0, 0, 0, 155};  
     ray::Color shadow_c = {148, 148, 148, 70}; 
 
-
     // menu bar
     ray::Rectangle menuBar = {0, 0, 310, 30};
 
     //visor
     ray::Rectangle visor = {10, 80, 290, 60};
-    //ray::Rectangle border_visor = {10, 80, 290, 60};
+    
+
+    // menu bar buttons
+    std::vector<ray::Rectangle> bnt_up(4);
+    std::vector<ray::Rectangle> bnt_sh(4);
+    std::vector<ray::Rectangle> bnt_br(4);
 
 
-    // buttons
-    ray::Rectangle clear = {10, 40, 68, 30};
-    ray::Rectangle copy = {158, 40, 68, 30};
-    ray::Rectangle clear_all  = {232, 40, 68, 30};
+    for(int i = 0; i < 4; i++){
+        bnt_up[i] = {10.0f + i*(68+6), 40, 68, 30};
+        bnt_sh[i] = {10.0f + i*(68+6), 40 + 26, 68, 4};
+        bnt_br[i] = {10.0f + i*(68+6), 40, 68, 4}; 
+    }
 
-    // buttons shaders
-    ray::Rectangle clear_sh = {10, 67, 68, 3};
-    ray::Rectangle copy_sh = {158, 67, 68, 3};
-    ray::Rectangle clear_all_sh = {232, 67, 68, 3};
+    bnt_up.erase(bnt_up.begin() + 1);
+    bnt_sh.erase(bnt_sh.begin() + 1);
+    bnt_br.erase(bnt_br.begin() + 1);
 
-    // buttons bright
-    ray::Rectangle clear_br = {10, 40, 68, 3};
-    ray::Rectangle copy_br = {158, 40, 68, 3};
-    ray::Rectangle clear_all_br = {232, 40, 68, 3};
 
-    // calculators buttons
+    // calculator buttons
     int num_row = 4;
     int num_col = 4;
     int num_buttons = num_row  * num_col;
@@ -54,16 +54,17 @@ int main() {
     int vector_i = 0;
     float actual_row = 150.0f;
 
-
     for(int i = 0; i < num_row; i++){
         for(int j = 0; j < num_col; j++){
             button[vector_i] = {10.0f + j*(68+6), actual_row, 68, 60};
             shadow[vector_i] = {10.0f + j*(68+6), actual_row + 56, 68, 4};
-            bright[vector_i] = {10.0f + j*(68+6), actual_row + 1, 68, 4};
-            vector_i++; 
+            bright[vector_i] = {10.0f + j*(68+6), actual_row, 68, 4};
+
+            vector_i++;
         }
-        actual_row = actual_row + 66.0f; 
+        actual_row += 66.0f;
     }
+
 
     ray::Rectangle Jury_rig = {84, 348, 142, 60};
     ray::Rectangle Jury_rig_sh = {84, 404, 142, 4};
@@ -73,42 +74,28 @@ int main() {
     ray::Rectangle output = {10, 420, 290, 25};
     ray::Rectangle output_sh = {10, 420, 290, 3};
 
+
     while (!ray::WindowShouldClose()) {
         ray::BeginDrawing();
         ray::ClearBackground(background);
 
-        // interface
         ray::DrawRectangleRec(menuBar, background_Alt);
-
-        // menu bar buttons
-        ray::DrawRectangleRec(clear, background_Alt);
-        ray::DrawRectangleRec(copy, background_Alt);
-        ray::DrawRectangleRec(clear_all, background_Alt);
-
-        // menu bar shaders
-        ray::DrawRectangleRec(clear_sh, shadow_c);
-        ray::DrawRectangleRec(copy_sh, shadow_c);
-        ray::DrawRectangleRec(clear_all_sh, shadow_c);
-
-        // menu bar bright
-        ray::DrawRectangleRec(clear_br, ray::WHITE);
-        ray::DrawRectangleRec(copy_br, ray::WHITE);
-        ray::DrawRectangleRec(clear_all_br, ray::WHITE);
-
-        // menu bar border buttons
-        ray::DrawRectangleLinesEx(clear, 1, border_c);
-        ray::DrawRectangleLinesEx(copy, 1, border_c);
-        ray::DrawRectangleLinesEx(clear_all, 1, border_c);
 
         ray::DrawRectangleRec(visor, ray::WHITE);
         ray::DrawRectangleLinesEx(visor, 1, border_c);
 
-        // drawing buttons
         for(int i = 0; i < num_buttons; i++){
             ray::DrawRectangleRec(button[i], background_Alt);
             ray::DrawRectangleRec(shadow[i], shadow_c);
             ray::DrawRectangleRec(bright[i], ray::WHITE);
             ray::DrawRectangleLinesEx(button[i], 1, border_c);
+        }
+
+        for(int i = 0; i < 3; i++){
+            ray::DrawRectangleRec(bnt_up[i], background_Alt);
+            ray::DrawRectangleRec(bnt_sh[i], shadow_c);
+            ray::DrawRectangleRec(bnt_br[i], ray::WHITE);
+            ray::DrawRectangleLinesEx(bnt_up[i], 1, border_c);
         }
 
         ray::DrawRectangleRec(Jury_rig, background_Alt);

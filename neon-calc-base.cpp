@@ -1,9 +1,20 @@
 /*
-    Developer: Francisco Passos | Frank Steps
+    Developed by: Francisco Passos | Frank Steps
     Developed in: 25/09/2025
-    Modifield in:   26/09/2025
+    Modifield in: 26/09/2025
+
+    [PT-BR]
+        Este programa é um teste de capacidade do uso de C++ e raylib. Com exceção das fontes,
+    este projeto é 100% autoral. A interface apenas foi inspirada no visual antigo do windows.
+    O projeto consiste em uma calculadora simples que realiza operações básicas
+
+    [EN-US]
+        This program is a capacity test for using C++ and Raylib. This project is 100% original.
+    The interface was inspired by the old Windows visual style. This project consists of a simple 
+    calculator that performs basic operations.
 */
 
+// libraries
 #include <iostream>
 #include <vector>
 #include <string>
@@ -12,6 +23,7 @@ namespace ray {
     #include <raylib.h>
 }
 
+// main function
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
 
@@ -34,13 +46,12 @@ int main() {
 
     //visor
     ray::Rectangle visor = {10, 80, 290, 60};
-    
+
 
     // menu bar buttons
     std::vector<ray::Rectangle> bnt_up(4);
     std::vector<ray::Rectangle> bnt_sh(4);
     std::vector<ray::Rectangle> bnt_br(4);
-
 
     for(int i = 0; i < 4; i++){
         bnt_up[i] = {10.0f + i*(68+6), 40, 68, 30};
@@ -80,6 +91,7 @@ int main() {
     ray::Rectangle Jury_rig = {84, 348, 142, 60};
     ray::Rectangle Jury_rig_sh = {84, 404, 142, 4};
     ray::Rectangle Jury_rig_br = {84, 348, 142, 4};
+
 
     //output
     ray::Rectangle output = {10, 420, 290, 25};
@@ -134,7 +146,6 @@ int main() {
 
 
         // falta automatizar essa parte -> coordenadas prontas
-
         ray::DrawTextEx(tahoma, "/", {258, 162}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "*", {258, 234}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "-", {260, 296}, 32, 1, ray::BLACK);

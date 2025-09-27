@@ -58,7 +58,6 @@ int main() {
         bnt_sh[i] = {10.0f + i*(68+6), 40 + 26, 68, 4};
         bnt_br[i] = {10.0f + i*(68+6), 40, 68, 4}; 
     }
-
     bnt_up.erase(bnt_up.begin() + 1);
     bnt_sh.erase(bnt_sh.begin() + 1);
     bnt_br.erase(bnt_br.begin() + 1);
@@ -102,6 +101,9 @@ int main() {
         ray::BeginDrawing();
         ray::ClearBackground(background);
 
+        // mouse cordinates
+        ray::Vector2 mousePoint = ray::GetMousePosition();
+
         // menu bar interface
         ray::DrawRectangleRec(menuBar, background_Alt);
 
@@ -136,8 +138,8 @@ int main() {
         ray::DrawRectangleRec(output_sh, shadow_c);
 
         // text
-        ray::DrawTextEx(ms_sans, "Menu", {10, 7}, 17, 1, ray::BLACK);
-        ray::DrawTextEx(ms_sans, "Settings", {70, 7}, 17, 1, ray::BLACK);
+        ray::DrawTextEx(ms_sans, "Menu", {10, 7}, 17, 1, ray::DARKGRAY);
+        ray::DrawTextEx(ms_sans, "Settings", {70, 7}, 17, 1, ray::DARKGRAY);
         ray::DrawTextEx(ms_sans, "About", {150, 7}, 17, 1, ray::BLACK);
 
         ray::DrawTextEx(ms_sans, "---->", {31, 45}, 17, 1, ray::BLACK);
@@ -151,17 +153,18 @@ int main() {
         ray::DrawTextEx(tahoma, "-", {260, 296}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "+", {256, 360}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "=", {146, 360}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "0", {36, 360}, 32, 1, ray::BLACK);
 
+        ray::DrawTextEx(tahoma, "0", {36, 360}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "9", {183, 162}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "8", {110, 162}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "7", {34, 162}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "7", {36, 162}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "6", {183, 230}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "5", {110, 230}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "4", {36, 230}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "3", {183, 295}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "2", {110, 295}, 32, 1, ray::BLACK);
         ray::DrawTextEx(tahoma, "1", {36, 295}, 32, 1, ray::BLACK);
+        ray::DrawTextEx(tahoma, "0", {36, 360}, 32, 1, ray::BLACK);
 
         // colisions
         ray::EndDrawing();

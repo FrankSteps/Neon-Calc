@@ -98,6 +98,8 @@ int main() {
 
 
     while (!ray::WindowShouldClose()) {
+        ray::Vector2 mousepos = ray::GetMousePosition();
+
         ray::BeginDrawing();
         ray::ClearBackground(background);
 

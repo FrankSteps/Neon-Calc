@@ -14,7 +14,6 @@
     calculator that performs basic operations.
 */
 
-// libraries
 #include <iostream>
 #include <vector>
 #include <string>
@@ -23,7 +22,33 @@ namespace ray {
     #include <raylib.h>
 }
 
-// main function
+std::string textButtons[16] = { 
+    "7","8","9","/",
+    "4","5","6","*",
+    "1","2","3","-",
+    "0","="," ","+"
+};
+
+ray::Vector2 pos_textButtons[16] = {
+    {36,162},{110,162},{183,162},{258,162},
+    {36,230},{110,230},{183,230},{258,234},
+    {36,295},{110,295},{183,295},{260,296},
+    {36,360},{146,360},{146,360},{256,360} 
+};
+
+std::vector<ray::Rectangle> bnt_up(4);
+std::vector<ray::Rectangle> bnt_sh(4);
+std::vector<ray::Rectangle> bnt_br(4);
+
+
+int num_row = 4;
+int num_col = 4;
+int num_buttons = num_row  * num_col;
+
+std::vector<ray::Rectangle> button(num_buttons);
+std::vector<ray::Rectangle> shadow(num_buttons);
+std::vector<ray::Rectangle> bright(num_buttons);
+
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
 
@@ -47,12 +72,6 @@ int main() {
     //visor
     ray::Rectangle visor = {10, 80, 290, 60};
 
-
-    // menu bar buttons
-    std::vector<ray::Rectangle> bnt_up(4);
-    std::vector<ray::Rectangle> bnt_sh(4);
-    std::vector<ray::Rectangle> bnt_br(4);
-
     for(int i = 0; i < 4; i++){
         bnt_up[i] = {10.0f + i*(68+6), 40, 68, 30};
         bnt_sh[i] = {10.0f + i*(68+6), 40 + 26, 68, 4};
@@ -62,19 +81,8 @@ int main() {
     bnt_sh.erase(bnt_sh.begin() + 1);
     bnt_br.erase(bnt_br.begin() + 1);
 
-
-    // calculator buttons
-    int num_row = 4;
-    int num_col = 4;
-    int num_buttons = num_row  * num_col;
-
-    std::vector<ray::Rectangle> button(num_buttons);
-    std::vector<ray::Rectangle> shadow(num_buttons);
-    std::vector<ray::Rectangle> bright(num_buttons);
-
     int vector_i = 0;
     float actual_row = 150.0f;
-
     for(int i = 0; i < num_row; i++){
         for(int j = 0; j < num_col; j++){
             button[vector_i] = {10.0f + j*(68+6), actual_row, 68, 60};
@@ -91,11 +99,11 @@ int main() {
     ray::Rectangle Jury_rig_sh = {84, 404, 142, 4};
     ray::Rectangle Jury_rig_br = {84, 348, 142, 4};
 
-
     //output
     ray::Rectangle output = {10, 420, 290, 25};
     ray::Rectangle output_sh = {10, 420, 290, 3};
 
+    ray::Vector2 pos_button = {0.0f, 0.0f};
 
     while (!ray::WindowShouldClose()) {
         ray::Vector2 mousepos = ray::GetMousePosition();
@@ -135,40 +143,22 @@ int main() {
         ray::DrawRectangleRec(Jury_rig_br, ray::WHITE);
         ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
 
-        // output error
+        // output
         ray::DrawRectangleLinesEx(output, 1, border_c);
         ray::DrawRectangleRec(output_sh, shadow_c);
 
-        // text
         ray::DrawTextEx(ms_sans, "Menu", {10, 7}, 17, 1, ray::DARKGRAY);
         ray::DrawTextEx(ms_sans, "Settings", {70, 7}, 17, 1, ray::DARKGRAY);
         ray::DrawTextEx(ms_sans, "About", {150, 7}, 17, 1, ray::BLACK);
-
         ray::DrawTextEx(ms_sans, "---->", {31, 45}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "Copy", {173, 45}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "Clear", {246, 45}, 17, 1, ray::BLACK);
 
+        // draw button's text
+        for(int i = 0; i < 16; i++){
+            ray::DrawTextEx(tahoma, textButtons[i].c_str(), pos_textButtons[i], 32, 1, ray::BLACK);
+        }
 
-        // falta automatizar essa parte -> coordenadas prontas
-        ray::DrawTextEx(tahoma, "/", {258, 162}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "*", {258, 234}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "-", {260, 296}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "+", {256, 360}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "=", {146, 360}, 32, 1, ray::BLACK);
-
-        ray::DrawTextEx(tahoma, "0", {36, 360}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "9", {183, 162}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "8", {110, 162}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "7", {36, 162}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "6", {183, 230}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "5", {110, 230}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "4", {36, 230}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "3", {183, 295}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "2", {110, 295}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "1", {36, 295}, 32, 1, ray::BLACK);
-        ray::DrawTextEx(tahoma, "0", {36, 360}, 32, 1, ray::BLACK);
-
-        // colisions
         ray::EndDrawing();
     }
 

@@ -1,7 +1,7 @@
 /*
     Developed by: Francisco Passos | Frank Steps
     Developed in: 25/09/2025
-    Modifield in: 26/09/2025
+    Modifield in: 12/10/2025
 
     [PT-BR]
         Este programa é um teste de capacidade do uso de C++ e raylib. Com exceção das fontes,
@@ -33,13 +33,12 @@ ray::Vector2 pos_textButtons[16] = {
     {36,162},{110,162},{183,162},{258,162},
     {36,230},{110,230},{183,230},{258,234},
     {36,295},{110,295},{183,295},{260,296},
-    {36,360},{146,360},{146,360},{256,360} 
+    {36,360},{144,360},{144,360},{256,360} 
 };
 
 std::vector<ray::Rectangle> bnt_up(4);
 std::vector<ray::Rectangle> bnt_sh(4);
 std::vector<ray::Rectangle> bnt_br(4);
-
 
 int num_row = 4;
 int num_col = 4;
@@ -129,19 +128,32 @@ int main() {
         ray::DrawRectangleRec(visor, ray::WHITE);
         ray::DrawRectangleLinesEx(visor, 1, border_c);
 
-
         // render arithmetic buttons 
         for(int i = 0; i < num_buttons; i++){
             ray::DrawRectangleRec(button[i], background_Alt);
             ray::DrawRectangleRec(shadow[i], shadow_c);
             ray::DrawRectangleRec(bright[i], ray::WHITE);
             ray::DrawRectangleLinesEx(button[i], 1, border_c);
+
+            if(i == 13 || i == 14){
+                // junction
+                ray::DrawRectangleRec(Jury_rig, background_Alt);
+                ray::DrawRectangleRec(Jury_rig_sh, shadow_c);
+                ray::DrawRectangleRec(Jury_rig_br, ray::WHITE);
+                ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
+            }
+
+            // colision
+            if (ray::CheckCollisionPointRec(mousepos, button[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
+                std::cout << "Button pressed: " << textButtons[i] << std::endl;
+            }
         }
 
-        ray::DrawRectangleRec(Jury_rig, background_Alt);
-        ray::DrawRectangleRec(Jury_rig_sh, shadow_c);
-        ray::DrawRectangleRec(Jury_rig_br, ray::WHITE);
-        ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
+        // draw button's text
+        for(int i = 0; i < num_buttons; i++){
+            ray::DrawTextEx(tahoma, textButtons[i].c_str(), pos_textButtons[i], 32, 1, ray::BLACK);
+        }
+
 
         // output
         ray::DrawRectangleLinesEx(output, 1, border_c);
@@ -153,11 +165,6 @@ int main() {
         ray::DrawTextEx(ms_sans, "---->", {31, 45}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "Copy", {173, 45}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "Clear", {246, 45}, 17, 1, ray::BLACK);
-
-        // draw button's text
-        for(int i = 0; i < 16; i++){
-            ray::DrawTextEx(tahoma, textButtons[i].c_str(), pos_textButtons[i], 32, 1, ray::BLACK);
-        }
 
         ray::EndDrawing();
     }

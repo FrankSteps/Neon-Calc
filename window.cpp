@@ -22,31 +22,31 @@ namespace ray {
     #include <raylib.h>
 }
 
-std::string textButtons[16] = { 
+const int num_row = 4;
+const int num_col = 4;
+const int num_buttons = num_row  * num_col;
+
+std::vector<ray::Rectangle> button(num_buttons);
+std::vector<ray::Rectangle> shadow(num_buttons);
+std::vector<ray::Rectangle> bright(num_buttons);
+
+std::vector<ray::Rectangle> bnt_up(4);
+std::vector<ray::Rectangle> bnt_sh(4);
+std::vector<ray::Rectangle> bnt_br(4);
+
+std::string textButtons[num_buttons] = { 
     "7","8","9","/",
     "4","5","6","*",
     "1","2","3","-",
     "0","="," ","+"
 };
 
-ray::Vector2 pos_textButtons[16] = {
+ray::Vector2 pos_textButtons[num_buttons] = {
     {36,162},{110,162},{183,162},{258,162},
     {36,230},{110,230},{183,230},{258,234},
     {36,295},{110,295},{183,295},{260,296},
     {36,360},{144,360},{144,360},{256,360} 
 };
-
-std::vector<ray::Rectangle> bnt_up(4);
-std::vector<ray::Rectangle> bnt_sh(4);
-std::vector<ray::Rectangle> bnt_br(4);
-
-int num_row = 4;
-int num_col = 4;
-int num_buttons = num_row  * num_col;
-
-std::vector<ray::Rectangle> button(num_buttons);
-std::vector<ray::Rectangle> shadow(num_buttons);
-std::vector<ray::Rectangle> bright(num_buttons);
 
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
@@ -93,7 +93,7 @@ int main() {
         actual_row += 66.0f;
     }
 
-    // jury-rig button :/
+    // jury-rig button :/ (Gambiarra)
     ray::Rectangle Jury_rig = {84, 348, 142, 60};
     ray::Rectangle Jury_rig_sh = {84, 404, 142, 4};
     ray::Rectangle Jury_rig_br = {84, 348, 142, 4};

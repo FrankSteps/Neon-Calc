@@ -1,7 +1,7 @@
 /*
     Developed by: Francisco Passos | Frank Steps
     Developed in: 25/09/2025
-    Modifield in: 12/10/2025
+    Modifield in: 22/12/2025
 
     [PT-BR]
         Este programa é um teste de capacidade do uso de C++ e raylib. Com exceção das fontes,
@@ -41,6 +41,10 @@ std::string textButtons[num_buttons] = {
     "0","="," ","+"
 };
 
+std::string textUpBnt[3] = {
+    "--->", "copy", "clear"
+};
+
 ray::Vector2 pos_textButtons[num_buttons] = {
     {36,162},{110,162},{183,162},{258,162},
     {36,230},{110,230},{183,230},{258,234},
@@ -71,6 +75,7 @@ int main() {
     //visor
     ray::Rectangle visor = {10, 80, 290, 60};
 
+    // command buttons generator 
     for(int i = 0; i < 4; i++){
         bnt_up[i] = {10.0f + i*(68+6), 40, 68, 30};
         bnt_sh[i] = {10.0f + i*(68+6), 40 + 26, 68, 4};
@@ -80,6 +85,8 @@ int main() {
     bnt_sh.erase(bnt_sh.begin() + 1);
     bnt_br.erase(bnt_br.begin() + 1);
 
+
+    // number buttons and operation buttons generator 
     int vector_i = 0;
     float actual_row = 150.0f;
     for(int i = 0; i < num_row; i++){
@@ -93,7 +100,7 @@ int main() {
         actual_row += 66.0f;
     }
 
-    // jury-rig button :/ (Gambiarra)
+    // jury-rig button :/ (Gambiarra) -> Junction 
     ray::Rectangle Jury_rig = {84, 348, 142, 60};
     ray::Rectangle Jury_rig_sh = {84, 404, 142, 4};
     ray::Rectangle Jury_rig_br = {84, 348, 142, 4};
@@ -116,12 +123,26 @@ int main() {
         // menu bar interface
         ray::DrawRectangleRec(menuBar, background_Alt);
 
-        // render buttons
+        // add code to control buttons too  
+
+        // render command buttons
         for(int i = 0; i < 3; i++){
             ray::DrawRectangleRec(bnt_up[i], background_Alt);
             ray::DrawRectangleRec(bnt_sh[i], shadow_c);
             ray::DrawRectangleRec(bnt_br[i], ray::WHITE);
             ray::DrawRectangleLinesEx(bnt_up[i], 1, border_c);
+
+            // commands to commands buttons 
+            if (ray::CheckCollisionPointRec(mousepos, bnt_up[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
+                std::cout << "Command pressed: " << textUpBnt[i] << std::endl;
+                if(textUpBnt[i] == "copy"){
+                    ray::SetClipboardText("I love you, my Frank <3");
+                }else if(textUpBnt[i] == "clear"){
+                    // nothing yet...
+                } else {
+                    // nothing yet...
+                }
+            }
         }
 
         // visor
@@ -143,11 +164,12 @@ int main() {
                 ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
             }
 
-            // colision
+            // colision :: for tests :: Main logic here  
             if (ray::CheckCollisionPointRec(mousepos, button[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
-                std::cout << "Button pressed: " << textButtons[i] << std::endl;
+                std::cout << "Arithmetic button pressed: " << textButtons[i] << std::endl;
             }
         }
+
 
         // draw button's text
         for(int i = 0; i < num_buttons; i++){
@@ -162,6 +184,7 @@ int main() {
         ray::DrawTextEx(ms_sans, "Menu", {10, 7}, 17, 1, ray::DARKGRAY);
         ray::DrawTextEx(ms_sans, "Settings", {70, 7}, 17, 1, ray::DARKGRAY);
         ray::DrawTextEx(ms_sans, "About", {150, 7}, 17, 1, ray::BLACK);
+
         ray::DrawTextEx(ms_sans, "---->", {31, 45}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "Copy", {173, 45}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "Clear", {246, 45}, 17, 1, ray::BLACK);

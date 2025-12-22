@@ -1,19 +1,19 @@
 #include <iostream>
 
 float val1, val2;
-char simbol; 
+char symbol; 
 
 int main() {
     std::cout << "first value: ";
     std::cin >> val1;
 
     std::cout << "operation: ";
-    std::cin >> simbol;
+    std::cin >> symbol;
 
     std::cout << "second value: ";
     std::cin >> val2;
 
-    switch (simbol) {
+    switch (symbol) {
         case '+':
             std::cout << '\n' << val1 + val2 << '\n';
         break;
@@ -30,13 +30,13 @@ int main() {
             if (!val2 == 0) {
                 std::cout << '\n' << val1 / val2 << '\n';
             } else {
-                std::cout << '\n' << "error" << '\n';
+                std::cerr << '\n' << "error :: 001 :: Infinito" << '\n';
                 return EXIT_FAILURE;
             }
         break;
 
         default:
-            std::cout << '\n' << "error" << '\n';   
+            std::cerr << '\n' << "error :: 002 :: Parâmetros inválidos" << '\n';   
         break;
     }
 

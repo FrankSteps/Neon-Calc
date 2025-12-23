@@ -42,13 +42,14 @@ std::vector<ray::Rectangle> shadow(num_buttons);
 std::vector<ray::Rectangle> bright(num_buttons);
 
 
-ray::Vector2 pos_textButtons[num_buttons + 6] = {
-    {10,7}, {70,7}, {150,7}, 
-    {31,45}, {173,45}, {246,45},
+ray::Vector2 pos_textButtons[num_buttons + 7] = {
+    {10,7},{70,7},{150,7},
+    {31,45},{173,45},{246,45},
     {36,162},{110,162},{183,162},{258,162},
     {36,230},{110,230},{183,230},{258,234},
     {36,295},{110,295},{183,295},{260,296},
-    {36,360},{144,360},{144,360},{256,360} 
+    {36,360},{144,360},{144,360},{256,360},
+    {14,424} 
 };
 
 std::string textButtons[num_buttons + 6] = { 
@@ -85,10 +86,32 @@ std::vector<ButtonState> buttonState = {
 ray::Color returnColor(ButtonState state){
     return (state == ButtonState::Enabled)? active : inactive;  
 }
+// ---------------------------------     error     ---------------------------------
+
+enum class Messenger {
+    Void, Inactive, Copied, Cleared 
+};
+
+std::string messenger(Messenger message){
+    switch(message){
+        case Messenger::Void: 
+            return " "; 
+        case Messenger::Inactive: 
+            return "Error or inactive";
+        case Messenger::Copied:
+            return "Copied!"; 
+        case Messenger::Cleared:
+            return "Cleared!";
+        default:
+            return "Unknown error";
+    }
+}
+
 
 // --------------------------------- main function ---------------------------------
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
+    std::string messengerText = messenger(Messenger::Void); 
 
     // icon
     ray::Image icon = ray::LoadImage("images/neon.png");
@@ -168,8 +191,9 @@ int main() {
                 std::cout << "Command button pressed: " << textButtons[i + 3] << std::endl;
                 if(textButtons[i + 3] == "Copy"){
                     ray::SetClipboardText("I love you, my Frank <3"); // bruh haha. Send it to me: franksteps.contato@gmail.com
+                    messengerText = messenger(Messenger::Copied); 
                 }else if(textButtons[i + 3] == "Clear"){
-                    // nothing yet... 
+                    messengerText = messenger(Messenger::Cleared); 
                 } else {
                     // nothing yet...
                 }
@@ -214,29 +238,32 @@ int main() {
             ray::DrawTextEx(tahoma, textButtons[i+6].c_str(), pos_textButtons[i+6], 32, 1, ray::BLACK);
         }
 
-        // output
-        ray::DrawRectangleLinesEx(output, 1, border_c);
-        ray::DrawRectangleRec(output_sh, shadow_c);
-
         // control buttons colision 
         for(int i = 0; i < 3; i++){
             ray::DrawRectangleRec(controlButton[i], translucid);
             if(ray::CheckCollisionPointRec(mousepos, controlButton[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
                 bool buttonEnabled = buttonState[i] == ButtonState::Enabled;
                 if(textButtons[i] == "Main" && buttonEnabled){
-                    // nothing yet
+                    messengerText = messenger(Messenger::Void);
+                    //
                 } else if(textButtons[i] == "Settings" && buttonEnabled) {
-                    // nothing yet 
+                    messengerText = messenger(Messenger::Void);
+                    //
                 } else if(textButtons[i] == "About" && buttonEnabled) {
                     // Opens the "About" window for Neon Calc
+                    messengerText = messenger(Messenger::Void);
                     if (fork() == 0) {
                         execl("./about", "./about", nullptr); // a beautiful code... 
                     }
                 } else {
-                    std::cout << "error or inactive\n";
+                    messengerText = messenger(Messenger::Inactive);
                 }
             }
         }
+        // output
+        ray::DrawRectangleLinesEx(output, 1, border_c);
+        ray::DrawRectangleRec(output_sh, shadow_c);
+        ray::DrawTextEx(ms_sans, messengerText.c_str(), pos_textButtons[22], 17, 1, ray::RED);
         ray::EndDrawing();
     }
 

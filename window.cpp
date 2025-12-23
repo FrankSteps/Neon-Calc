@@ -1,7 +1,7 @@
 /*
     Developed by: Francisco Passos | Frank Steps
     Developed in: 25/09/2025
-    Modifield in: 22/12/2025
+    Modifield in: 23/12/2025
 
     [PT-BR]
         Este programa é um teste de capacidade do uso de C++ e raylib. Com exceção das fontes,
@@ -38,26 +38,25 @@ std::vector<ray::Rectangle> button(num_buttons);
 std::vector<ray::Rectangle> shadow(num_buttons);
 std::vector<ray::Rectangle> bright(num_buttons);
 
-std::string textBnt[6] = {
-    "main", "settings", "about",
-    "--->", "copy", "clear"
-};
 
-
-std::string textButtons[num_buttons] = { 
-    "7","8","9","/",
-    "4","5","6","*",
-    "1","2","3","-",
-    "0","=","=","+"
-};
-
-
-ray::Vector2 pos_textButtons[num_buttons] = {
+ray::Vector2 pos_textButtons[num_buttons + 6] = {
+    {10,7}, {70,7}, {150,7}, 
+    {31,45}, {173,45}, {246,45},
     {36,162},{110,162},{183,162},{258,162},
     {36,230},{110,230},{183,230},{258,234},
     {36,295},{110,295},{183,295},{260,296},
     {36,360},{144,360},{144,360},{256,360} 
 };
+
+std::string textButtons[num_buttons + 6] = { 
+    "Main", "Settings", "About",
+    "---->", "Copy", "Clear",
+    "7", "8", "9", "/",
+    "4", "5", "6", "*",
+    "1", "2", "3", "-",
+    "0", "=", "=", "+"
+};
+
 
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
@@ -95,7 +94,6 @@ int main() {
         bnt_sh[i] = {10.0f + i*(68+6), 40 + 26, 68, 4};
         bnt_br[i] = {10.0f + i*(68+6), 40, 68, 4}; 
     }
-    // just 3 buttons... 
     bnt_up.erase(bnt_up.begin() + 1);
     bnt_sh.erase(bnt_sh.begin() + 1);
     bnt_br.erase(bnt_br.begin() + 1);
@@ -147,10 +145,10 @@ int main() {
 
             // colision to commands buttons 
             if (ray::CheckCollisionPointRec(mousepos, bnt_up[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
-                std::cout << "Command button pressed: " << textBnt[i+3] << std::endl;
-                if(textBnt[i+3] == "copy"){
+                std::cout << "Command button pressed: " << textButtons[i + 3] << std::endl;
+                if(textButtons[i + 3] == "Copy"){
                     ray::SetClipboardText("I love you, my Frank <3"); // bruh haha. Send it to me: franksteps.contato@gmail.com
-                }else if(textBnt[i+3] == "clear"){
+                }else if(textButtons[i + 3] == "Clear"){
                     // nothing yet... 
                 } else {
                     // nothing yet...
@@ -171,8 +169,12 @@ int main() {
 
             // colision to arithmetic buttons -> logic to calculator here   
             if (ray::CheckCollisionPointRec(mousepos, button[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
-                std::cout << "Arithmetic button pressed: " << textButtons[i] << std::endl;
+                std::cout << "Arithmetic button pressed: " << textButtons[i+6] << std::endl;
+
+
                 // here 
+
+
             }
         }
         // junction 
@@ -181,30 +183,29 @@ int main() {
         ray::DrawRectangleRec(Jury_rig_br, ray::WHITE);
         ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
 
-
-        // draw button's text
-        for(int i = 0; i < num_buttons; i++){
-            ray::DrawTextEx(tahoma, textButtons[i].c_str(), pos_textButtons[i], 32, 1, ray::BLACK);
+        // draw control buttons and command buttons text 
+        for(int i = 0; i < 3; i++){
+            ray::DrawTextEx(ms_sans, textButtons[i].c_str(), pos_textButtons[i], 17, 1, inactive);
+            ray::DrawTextEx(ms_sans, textButtons[i+3].c_str(), pos_textButtons[i+3], 17, 1, ray::BLACK); 
         }
 
+        // draw arithmetic buttons text
+        for(int i = 0; i < num_buttons; i++){
+            ray::DrawTextEx(tahoma, textButtons[i+6].c_str(), pos_textButtons[i+6], 32, 1, ray::BLACK);
+        }
 
         // output
         ray::DrawRectangleLinesEx(output, 1, border_c);
         ray::DrawRectangleRec(output_sh, shadow_c);
 
-        ray::DrawTextEx(ms_sans, "Menu",     {10, 7}, 17, 1, inactive);
-        ray::DrawTextEx(ms_sans, "Settings", {70, 7}, 17, 1, inactive);
-        ray::DrawTextEx(ms_sans, "About",   {150, 7}, 17, 1, ray::BLACK);
-
-
         // control buttons colision 
         for(int i = 0; i < 3; i++){
             ray::DrawRectangleRec(controlButton[i], translucid);
             if(ray::CheckCollisionPointRec(mousepos, controlButton[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
-                std::cout << "Control button pressed: " << textBnt[i] << std::endl;
-                if(textBnt[i] == "main"){
+                std::cout << "Control button pressed: " << textButtons[i] << std::endl;
+                if(textButtons[i] == "Main"){
                     // nothing yet
-                } else if(textBnt[i] == "settings") {
+                } else if(textButtons[i] == "Settings") {
                     // nothing yet 
                 } else {
                     // Opens the "About" window for Neon Calc
@@ -214,11 +215,6 @@ int main() {
                 }
             }
         }
-
-        ray::DrawTextEx(ms_sans, "---->",  {31, 45}, 17, 1, ray::BLACK);
-        ray::DrawTextEx(ms_sans, "Copy",  {173, 45}, 17, 1, ray::BLACK);
-        ray::DrawTextEx(ms_sans, "Clear", {246, 45}, 17, 1, ray::BLACK);
-
         ray::EndDrawing();
     }
 

@@ -14,6 +14,8 @@
     calculator that performs basic operations.
 */
 
+// ---------------------------------   libraries   ---------------------------------
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -24,6 +26,7 @@ namespace ray {
     #include <raylib.h>
 }
 
+// ---------------------------------    visuals    ---------------------------------
 const int num_row = 4;
 const int num_col = 4;
 const int num_buttons = num_row  * num_col;
@@ -58,6 +61,32 @@ std::string textButtons[num_buttons + 6] = {
 };
 
 
+// define colors
+ray::Color background      = {224, 224, 224, 255};  
+ray::Color background_Alt  = {240, 240, 240, 255}; 
+ray::Color border_c        = {0, 0, 0, 155};  
+ray::Color shadow_c        = {148, 148, 148, 70}; 
+ray::Color inactive        = {0, 0, 0, 70};
+ray::Color active          = ray::BLACK;
+ray::Color translucid      = {0, 0, 0, 0};
+
+// --------------------------------- state buttons ---------------------------------
+enum class ButtonState {
+    Disabled,
+    Enabled,
+};
+
+std::vector<ButtonState> buttonState = {
+    ButtonState::Disabled,
+    ButtonState::Disabled, 
+    ButtonState::Enabled      
+};
+
+ray::Color returnColor(ButtonState state){
+    return (state == ButtonState::Enabled)? active : inactive;  
+}
+
+// --------------------------------- main function ---------------------------------
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
 
@@ -68,14 +97,6 @@ int main() {
     // fonts
     ray::Font ms_sans = ray::LoadFont("fonts/ms-sans-serif.otf");
     ray::Font tahoma = ray::LoadFont("fonts/tahomabd.ttf");
-
-    // define colors
-    ray::Color background      = {224, 224, 224, 255};  
-    ray::Color background_Alt  = {240, 240, 240, 255}; 
-    ray::Color border_c        = {0, 0, 0, 155};  
-    ray::Color shadow_c        = {148, 148, 148, 70}; 
-    ray::Color inactive        = {0, 0, 0, 70};
-    ray::Color translucid      = {0, 0, 0, 0};
 
     // menu bar
     ray::Rectangle menuBar = {0, 0, 310, 30};
@@ -124,14 +145,13 @@ int main() {
 
     ray::Vector2 pos_button = {0.0f, 0.0f};
 
+
     while (!ray::WindowShouldClose()) {
         ray::Vector2 mousepos = ray::GetMousePosition();
 
         ray::BeginDrawing();
         ray::ClearBackground(background);
 
-        // mouse cordinates
-        ray::Vector2 mousePoint = ray::GetMousePosition();
 
         // menu bar interface
         ray::DrawRectangleRec(menuBar, background_Alt); 
@@ -185,7 +205,7 @@ int main() {
 
         // draw control buttons and command buttons text 
         for(int i = 0; i < 3; i++){
-            ray::DrawTextEx(ms_sans, textButtons[i].c_str(), pos_textButtons[i], 17, 1, inactive);
+            ray::DrawTextEx(ms_sans, textButtons[i].c_str(), pos_textButtons[i], 17, 1, returnColor(buttonState[i]));
             ray::DrawTextEx(ms_sans, textButtons[i+3].c_str(), pos_textButtons[i+3], 17, 1, ray::BLACK); 
         }
 
@@ -202,23 +222,25 @@ int main() {
         for(int i = 0; i < 3; i++){
             ray::DrawRectangleRec(controlButton[i], translucid);
             if(ray::CheckCollisionPointRec(mousepos, controlButton[i]) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
-                std::cout << "Control button pressed: " << textButtons[i] << std::endl;
-                if(textButtons[i] == "Main"){
+                bool buttonEnabled = buttonState[i] == ButtonState::Enabled;
+                if(textButtons[i] == "Main" && buttonEnabled){
                     // nothing yet
-                } else if(textButtons[i] == "Settings") {
+                } else if(textButtons[i] == "Settings" && buttonEnabled) {
                     // nothing yet 
-                } else {
+                } else if(textButtons[i] == "About" && buttonEnabled) {
                     // Opens the "About" window for Neon Calc
                     if (fork() == 0) {
-                        execl("./about", "./about", nullptr); // a beautiful command... 
+                        execl("./about", "./about", nullptr); // a beautiful code... 
                     }
+                } else {
+                    std::cout << "error or inactive\n";
                 }
             }
         }
         ray::EndDrawing();
     }
 
-    // unloads and close
+    // end
     ray::UnloadImage(icon);
     ray::UnloadFont(ms_sans);
     ray::UnloadFont(tahoma);

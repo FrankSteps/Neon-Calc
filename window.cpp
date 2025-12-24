@@ -89,8 +89,9 @@ ray::Color returnColor(ButtonState state){
 // ---------------------------------     error     ---------------------------------
 
 enum class Messenger {
-    Void, Inactive, Copied, Cleared 
+    Void, Inactive, Copied, Cleared, Unknown
 };
+
 
 std::string messenger(Messenger message){
     switch(message){
@@ -102,7 +103,7 @@ std::string messenger(Messenger message){
             return "Copied!"; 
         case Messenger::Cleared:
             return "Cleared!";
-        default:
+        case Messenger::Unknown:
             return "Unknown error";
     }
 }
@@ -255,7 +256,7 @@ int main() {
                     if (fork() == 0) {
                         execl("./about", "./about", nullptr); // a beautiful code... 
                     }
-                } else {
+                } else { 
                     messengerText = messenger(Messenger::Inactive);
                 }
             }

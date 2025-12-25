@@ -1,10 +1,10 @@
 /*
     Developed by: Francisco Passos | Frank Steps
     Developed in: 25/09/2025
-    Modifield in: 23/12/2025
+    Modifield in: 24/12/2025
 
     [PT-BR]
-        Este programa é um teste de capacidade do uso de C++ e raylib. Com exceção das fontes,
+        Este programa é um teste de capacidade dso uso de C++ e raylib. Com exceção das fontes,
     este projeto é 100% autoral. A interface apenas foi inspirada no visual antigo do windows.
     O projeto consiste em uma calculadora simples que realiza operações básicas
 
@@ -67,6 +67,7 @@ ray::Color background      = {224, 224, 224, 255};
 ray::Color background_Alt  = {240, 240, 240, 255}; 
 ray::Color border_c        = {0, 0, 0, 155};  
 ray::Color shadow_c        = {148, 148, 148, 70}; 
+ray::Color bright_c        = ray::WHITE;
 ray::Color inactive        = {0, 0, 0, 70};
 ray::Color active          = ray::BLACK;
 ray::Color translucid      = {0, 0, 0, 0};
@@ -89,23 +90,19 @@ ray::Color returnColor(ButtonState state){
 // ---------------------------------     error     ---------------------------------
 
 enum class Messenger {
-    Void, Inactive, Copied, Cleared, Unknown
+    Void, Inactive, Copied, Cleared, Div
 };
 
 
 std::string messenger(Messenger message){
     switch(message){
-        case Messenger::Void: 
-            return " "; 
-        case Messenger::Inactive: 
-            return "Error or inactive";
-        case Messenger::Copied:
-            return "Copied!"; 
-        case Messenger::Cleared:
-            return "Cleared!";
-        case Messenger::Unknown:
-            return "Unknown error";
+        case     Messenger::Void:        return " "; 
+        case     Messenger::Inactive:    return "Error or inactive";
+        case     Messenger::Copied:      return "Copied!"; 
+        case     Messenger::Cleared:     return "Cleared!";
+        case     Messenger::Div:         return "Infinity!"; 
     }
+    return "Unknown error";
 }
 
 
@@ -113,6 +110,8 @@ std::string messenger(Messenger message){
 int main() {
     ray::InitWindow(310, 450, "Neon Calculator");
     std::string messengerText = messenger(Messenger::Void); 
+
+    float timer = 0.0f;
 
     // icon
     ray::Image icon = ray::LoadImage("images/neon.png");
@@ -172,6 +171,7 @@ int main() {
 
     while (!ray::WindowShouldClose()) {
         ray::Vector2 mousepos = ray::GetMousePosition();
+        timer += ray::GetFrameTime();
 
         ray::BeginDrawing();
         ray::ClearBackground(background);
@@ -184,7 +184,7 @@ int main() {
         for(int i = 0; i < 3; i++){
             ray::DrawRectangleRec(bnt_up[i], background_Alt);
             ray::DrawRectangleRec(bnt_sh[i], shadow_c);
-            ray::DrawRectangleRec(bnt_br[i], ray::WHITE);
+            ray::DrawRectangleRec(bnt_br[i], bright_c);
             ray::DrawRectangleLinesEx(bnt_up[i], 1, border_c);
 
             // colision to commands buttons 
@@ -209,7 +209,7 @@ int main() {
         for(int i = 0; i < num_buttons; i++){
             ray::DrawRectangleRec(button[i], background_Alt);
             ray::DrawRectangleRec(shadow[i], shadow_c);
-            ray::DrawRectangleRec(bright[i], ray::WHITE);
+            ray::DrawRectangleRec(bright[i], bright_c);
             ray::DrawRectangleLinesEx(button[i], 1, border_c);
 
             // colision to arithmetic buttons -> logic to calculator here   
@@ -225,7 +225,7 @@ int main() {
         // junction 
         ray::DrawRectangleRec(Jury_rig, background_Alt);
         ray::DrawRectangleRec(Jury_rig_sh, shadow_c);
-        ray::DrawRectangleRec(Jury_rig_br, ray::WHITE);
+        ray::DrawRectangleRec(Jury_rig_br, bright_c);
         ray::DrawRectangleLinesEx(Jury_rig, 1, border_c);
 
         // draw control buttons and command buttons text 
@@ -247,9 +247,11 @@ int main() {
                 if(textButtons[i] == "Main" && buttonEnabled){
                     messengerText = messenger(Messenger::Void);
                     //
+
                 } else if(textButtons[i] == "Settings" && buttonEnabled) {
                     messengerText = messenger(Messenger::Void);
                     //
+
                 } else if(textButtons[i] == "About" && buttonEnabled) {
                     // Opens the "About" window for Neon Calc
                     messengerText = messenger(Messenger::Void);
@@ -265,6 +267,12 @@ int main() {
         ray::DrawRectangleLinesEx(output, 1, border_c);
         ray::DrawRectangleRec(output_sh, shadow_c);
         ray::DrawTextEx(ms_sans, messengerText.c_str(), pos_textButtons[22], 17, 1, ray::RED);
+
+        // clear output message 
+        if(timer >= 3.0f){
+            messengerText = messenger(Messenger::Void);
+            timer = 0.0f;
+        }
         ray::EndDrawing();
     }
 

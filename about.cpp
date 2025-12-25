@@ -1,5 +1,5 @@
 /*
-	"about" window for NeonCalc
+	"about" window for NeonCalc | 2025
 
 	Neon Calculator 
 
@@ -7,7 +7,7 @@
 		This simple calculator was developed as a demonstration 
 		of C++ with Raylib. The interface is inspired by classic 
 		Windows design. 
-	|version| 1.0.0
+	|version| 1.0.3
 	|credits| 
 		e-mail: contato@franksteps.com 
 		github: github.com/franksteps
@@ -55,6 +55,7 @@ int main(){
 		ray::Vector2 mousepos = ray::GetMousePosition();
 
 		ray::BeginDrawing();
+		// background 
         ray::ClearBackground(background);
         ray::DrawRectangleRec(bac, background_Alt);
         ray::DrawRectangleLinesEx(det, 1, border_c);
@@ -67,12 +68,11 @@ int main(){
         // description 
         ray::DrawTextEx(ms_sans, "This simple calculator was developed as a ", ray::Vector2{15, 75}, 15, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "demonstration of C++  with Raylib. The in- ", ray::Vector2{15, 92}, 15, 1, ray::BLACK);
-        ray::DrawTextEx(ms_sans, "terface in  inspired by classic Windows 95.", ray::Vector2{15, 108}, 15, 1, ray::BLACK);
+        ray::DrawTextEx(ms_sans, "terface in  inspired by classic Windows 98.", ray::Vector2{15, 108}, 15, 1, ray::BLACK);
 
         // version
         ray::DrawTextEx(tahoma, "Version:", ray::Vector2{15, 140}, 17, 1, ray::BLACK);
         ray::DrawTextEx(ms_sans, "1.0.0", ray::Vector2{90, 142}, 15, 1, ray::BLACK);
-
 
         // credits
         ray::DrawTextEx(tahoma, "Credits:",  ray::Vector2{15, 170}, 15, 1, ray::BLACK);

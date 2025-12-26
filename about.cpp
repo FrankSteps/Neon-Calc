@@ -55,6 +55,7 @@ int main(){
 		ray::Vector2 mousepos = ray::GetMousePosition();
 
 		ray::BeginDrawing();
+
 		// background 
         ray::ClearBackground(background);
         ray::DrawRectangleRec(bac, background_Alt);
@@ -95,12 +96,14 @@ int main(){
         ray::DrawTextEx(ms_sans, "Ok", ray::Vector2{142, 331}, 20, 1, active);
 
         if(ray::CheckCollisionPointRec(mousepos, okButton) && ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
-        	return EXIT_SUCCESS;
+        	break;
         }
         ray::EndDrawing();
 	}
 
 	// unloads and close window 
-	ray::CloseWindow();
+	ray::UnloadFont(ms_sans);
+    ray::UnloadFont(tahoma);
+    ray::CloseWindow();
 	return EXIT_SUCCESS;
 }
